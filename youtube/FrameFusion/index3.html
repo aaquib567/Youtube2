@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Card on Reload</title>
+  <link rel="stylesheet" href="style.css">
+
+<style>
+    
+
+/* Style the card */
+.card {
+  width: 200px;
+  height: 100px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+  margin: 40px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the card text */
+.card-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+</style>
+</head>
+<body>
+  <!-- The card will be added here -->
+  <div id="card-container"></div>
+
+
+<script>
+    
+// Function to create and add the card
+function addCard() {
+  // Create the card element
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  // Create the card text element
+  const cardText = document.createElement("p");
+  cardText.classList.add("card-text");
+  cardText.textContent = "My name is Aaquib";
+
+  // Add the card text to the card
+  card.appendChild(cardText);
+
+  // Add the card to the container
+  const cardContainer = document.getElementById("card-container");
+  cardContainer.appendChild(card);
+}
+
+// Call the function when the page loads
+window.onload = addCard;
+</script>
+</body>
+</html>

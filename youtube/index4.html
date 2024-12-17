@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Photos API Example</title>
+  <style>
+    #photo-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+    .photo {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Free Photos from API</h1>
+  <div id="photo-container">Loading photos...</div>
+  <!-- <script src="script.js"></script> -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const photoContainer = document.getElementById("photo-container");
+  const API_KEY = "kZ5HbfHaWyhFEGcq8OBcXFwv7R8m3JLgGKoykhtL9zkrrtbGx87iajZY"; // Replace with your Pexels API key
+  const API_URL = "https://api.pexels.com/v1/search?query=nature&per_page=6";
+
+  // Fetch photos from Pexels API
+  fetch(API_URL, {
+    headers: {
+      Authorization: API_KEY, // Add your API key in the headers
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.photos && data.photos.length > 0) {
+        const photosHTML = data.photos
+          .map(
+            (photo) => `
+            <img 
+              src="${photo.src.medium}" 
+              alt="${photo.photographer}" 
+              class="photo"
+              title="Photo by ${photo.photographer}"
+            />
+          `
+          )
+          .join("");
+        photoContainer.innerHTML = photosHTML; // Insert photos into the container
+      } else {
+        photoContainer.innerHTML = "<p>No photos found.</p>";
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching photos:", error);
+      photoContainer.innerHTML = "<p>Failed to load photos.</p>";
+    });
+});
+
+</script>
+</body>
+</html>

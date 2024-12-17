@@ -1,0 +1,25 @@
+{
+    "name": "John",
+    "age": 30,
+    "city": "New York",
+    "hobbies": ["reading", "swimming", "coding"],
+    "job": "Software Developer",
+    "skills": ["JavaScript", "Python", "React"],
+    "address": {
+      "street": "123 Main St",
+      "city": "New York",
+      "zip": "10001"
+    },
+    "friends": [
+      {
+        "name": "Alice",
+        "age": 29
+      },
+      {
+        "name": "Bob",
+        "age": 32
+      }
+    ]
+  }
+  
+  

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Image Display from Lorem Picsum</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            background-color: #f1f1f1;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #333;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle .bar {
+            width: 25px;
+            height: 3px;
+            margin: 5px 0;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        /* Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #333;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                padding: 10px 0;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+            }
+
+            .nav-links a {
+                padding: 12px 0;
+                font-size: 18px;
+            }
+        }
+
+        /* Main Section Styles */
+        .main {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        /* Card Styles */
+        .card {
+            width: 45%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="#">CaptureCanvas</a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main">
+        <!-- Card 1 -->
+        <div class="card">
+            <div id="image-container-1">
+                <img id="random-image-1" src="" alt="Random Image">
+            </div>
+            <button class="load-image" id="load-image-1">Load Random Image</button>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+            <div id="image-container-2">
+                <img id="random-image-2" src="" alt="Random Image">
+            </div>
+            <button class="load-image" id="load-image-2">Load Random Image</button>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+            <div id="image-container-3">
+                <img id="random-image-3" src="" alt="Random Image">
+            </div>
+            <button class="load-image" id="load-image-3">Load Random Image</button>
+        </div>
+    </div>
+
+    <script>
+        // Get elements for the images and buttons
+        const randomImage1 = document.getElementById('random-image-1');
+        const loadImageButton1 = document.getElementById('load-image-1');
+
+        const randomImage2 = document.getElementById('random-image-2');
+        const loadImageButton2 = document.getElementById('load-image-2');
+       
+        const randomImage3 = document.getElementById('random-image-3');
+        const loadImageButton3 = document.getElementById('load-image-3');
+
+        // Function to fetch a random image from Lorem Picsum
+        function fetchRandomImage(imageElement) {
+            imageElement.src = 'https://picsum.photos/500';  // URL for random image of size 500x500
+        }
+
+        // Event listeners for the buttons
+        loadImageButton1.addEventListener('click', () => fetchRandomImage(randomImage1));
+        loadImageButton2.addEventListener('click', () => fetchRandomImage(randomImage2));
+        loadImageButton3.addEventListener('click', () => fetchRandomImage(randomImage3));
+
+        // Fetch the first random images when the page loads
+        fetchRandomImage(randomImage1);
+        fetchRandomImage(randomImage2);
+        fetchRandomImage(randomImage3);
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Video API Example</title>
+  <style>
+    #video-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+    .video {
+      width: 320px;
+      height: 180px;
+      border: 2px solid #ccc;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <h1>Free Videos from API</h1>
+  <div id="video-container">Loading videos...</div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const videoContainer = document.getElementById("video-container");
+      const API_KEY = "kZ5HbfHaWyhFEGcq8OBcXFwv7R8m3JLgGKoykhtL9zkrrtbGx87iajZY"; // Replace with your Pexels API key
+      const API_URL = "https://api.pexels.com/videos/search?query=nature&per_page=6";
+
+      // Fetch videos from Pexels Video API
+      fetch(API_URL, {
+        headers: {
+          Authorization: API_KEY, // Add your API key in the headers
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.videos && data.videos.length > 0) {
+            const videosHTML = data.videos
+              .map(
+                (video) => `
+                <video class="video" controls>
+                  <source src="${video.video_files[0].link}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              `
+              )
+              .join("");
+            videoContainer.innerHTML = videosHTML; // Insert videos into the container
+          } else {
+            videoContainer.innerHTML = "<p>No videos found.</p>";
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching videos:", error);
+          videoContainer.innerHTML = "<p>Failed to load videos.</p>";
+        });
+    });
+  </script>
+</body>
+</html>

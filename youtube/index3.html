@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Video API Example</title>
+  <style>
+    #video-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      border: 2px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container">
+    <p>Loading video...</p>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const videoContainer = document.getElementById("video-container");
+
+      // Example of a free video API without signup
+      const API_URL = "https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4";
+
+      // Dynamically create a video element
+      const videoHTML = `
+        <video controls>
+          <source src="${kZ5HbfHaWyhFEGcq8OBcXFwv7R8m3JLgGKoykhtL9zkrrtbGx87iajZY}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+
+      // Insert video into the container
+      videoContainer.innerHTML = videoHTML;
+    });
+  </script>
+</body>
+</html>

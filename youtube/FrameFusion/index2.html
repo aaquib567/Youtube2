@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaptureCanvas</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; height: 100vh; background-color: #f1f1f1; }
+        
+        /* Navbar Styling */
+        .navbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 30px; 
+            background-color: #333; 
+            color: white; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            transition: background-color 0.3s ease;
+        }
+        .navbar .logo a { font-size: 24px; font-weight: bold; color: #fff; }
+        
+        /* Mobile Menu toggle */
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            cursor: pointer; 
+        }
+        .menu-toggle .bar { 
+            width: 25px; 
+            height: 3px; 
+            margin: 5px 0; 
+            background-color: white; 
+            border-radius: 3px; 
+        }
+        
+        /* Nav Links Styling */
+        .nav-links { 
+            list-style: none; 
+            display: flex; 
+            opacity: 0; 
+            animation: slideIn 1s forwards;
+        }
+        .nav-links li { 
+            margin-left: 20px; 
+            position: relative; 
+        }
+        .nav-links a { 
+            color: white; 
+            padding: 10px 15px; 
+            font-size: 16px; 
+            transition: all 0.3s ease-in-out; 
+            position: relative;
+        }
+        
+        /* Animation on hover */
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #007bff;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #007bff; /* Change text color on hover */
+        }
+        
+        .nav-links a:hover::before {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Mobile View */
+        @media screen and (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav-links { 
+                display: none; 
+                flex-direction: column; 
+                width: 100%; 
+                background-color: #333; 
+                position: absolute; 
+                top: 70px; 
+                left: 0; 
+                padding: 10px 0; 
+                text-align: center; 
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                animation: slideInMobile 1s forwards;
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 10px 0; }
+            .nav-links a { padding: 12px 0; font-size: 18px; }
+        }
+
+        /* Keyframe animation for sliding in */
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-100%); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Keyframe animation for mobile sliding in */
+        @keyframes slideInMobile {
+            0% { opacity: 0; transform: translateX(-100%); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .main { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; max-width: 800px; height: auto; margin: 2rem auto; }
+        .card { width: 45%; background-color: #fff; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        img { width: 200px; height: 100px; max-width: 150px; border-radius: 8px; margin-bottom: 20px; }
+        button { padding: 10px 20px; background-color: #333; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #555; }
+        .download-btn { margin-top: 10px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .download-btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo"><a href="#">CaptureCanvas</a></div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main" id="card-container">
+    <!-- Cards will be dynamically added here -->
+</div>
+
+<script>
+    let cardCount = 0; // Track the number of cards added
+
+    // Function to fetch a random image from Lorem Picsum
+    function fetchRandomImage(imageElement) {
+        const randomWidth = Math.floor(Math.random() * 800) + 300; // Random width between 300 and 1100
+        const randomHeight = Math.floor(Math.random() * 800) + 300; // Random height between 300 and 1100
+        const imageURL = `https://picsum.photos/${randomWidth}/${randomHeight}`; // URL for random image
+        imageElement.src = imageURL;
+
+        // Add download button functionality
+        const downloadBtn = imageElement.nextElementSibling;
+        downloadBtn.href = imageURL; // Set the href to the image URL
+        downloadBtn.download = imageURL.split('/').pop(); // Set the filename for download
+    }
+
+    // Function to create and add a new card
+    function addNewCard() {
+        const cardContainer = document.getElementById('card-container');
+        const newCard = document.createElement('div');
+        newCard.classList.add('card');
+        
+        const imageElement = document.createElement('img');
+        newCard.appendChild(imageElement);
+        
+        const button = document.createElement('button');
+        button.textContent = "Load Random Image";
+        newCard.appendChild(button);
+
+        // Create the download button
+        const downloadBtn = document.createElement('a');
+        downloadBtn.classList.add('download-btn');
+        downloadBtn.textContent = "Download Image";
+        newCard.appendChild(downloadBtn);
+        
+        // Button click event to load random image
+        button.addEventListener('click', () => fetchRandomImage(imageElement));
+        fetchRandomImage(imageElement); // Fetch the first random image
+
+        cardContainer.appendChild(newCard);
+        cardCount++;
+
+        // Keep only the last 6 cards visible
+        const cards = cardContainer.querySelectorAll('.card');
+        if (cards.length > 6) {
+            cardContainer.removeChild(cards[0]); // Remove the first (oldest) card
+        }
+
+        // Add the "Add New Card" button after every 4 cards
+        if (cardCount % 4 === 0) {
+            addButton(); // Add the "Add New Card" button after every 4 cards
+        }
+    }
+
+    // Function to add the "Add New Card" button
+    function addButton() {
+        const existingButton = document.getElementById('load-cards-btn');
+        if (!existingButton) {
+            const newButton = document.createElement('button');
+            newButton.id = 'load-cards-btn';
+            newButton.textContent = 'Add New Card';
+            newButton.addEventListener('click', addNewCard);
+            document.body.appendChild(newButton);
+        }
+    }
+
+    // Initially, add 4 cards when the page loads
+    for (let i = 0; i < 4; i++) {
+        addNewCard();
+    }
+
+    // Initial button setup
+    addButton(); // Add the button after the first 4 cards
+    
+    // Mobile Menu Toggle
+    document.getElementById('mobile-menu').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+</script>
+
+</body>
+</html>

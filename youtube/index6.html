@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Photo from API</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .outer {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            height: 80vh;
+            min-width: 320px;
+            padding-right: 3rem;
+            background-color: lightgray;
+            text-align: center;
+        }
+        .icons {
+            margin-top: 4rem;
+            text-align: center;
+        }
+        .icons div {
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            width: 60px;
+            height: 40px;
+            border-radius: 30%;
+            text-align: center;
+            background-color: #d50e0e;
+        }
+        .icons div:hover {
+            background-color: rgb(243, 233, 233);
+        }
+        .icons i {
+            margin-top: 5px;
+            color: rgb(255, 255, 255);
+        }
+        i:hover {
+            color: black;
+        }
+        .box {
+            /* You can style the icons in this box as needed */
+        }
+        #photo-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .photo {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <div class="outer">
+            <div class="icons">
+                <div class="heart"><i class="far fa-heart fa-2x" style="color: rgb(27, 220, 210);"></i></div>
+                <div><i class="fa-regular fa-comment-dots" style="margin-top:10px;"></i></div>
+                <div style="margin-top:20px;"><i class="fas fa-share" style="color: rgb(241, 241, 246); margin-top: 10px;"></i></div>
+                <div><i class="fab fa-facebook fa-2x"></i></div>
+            </div>
+        </div>
+        <div class="box">
+            <i class="fas fa-camera fa-2x"></i>
+            <i class="far fa-heart fa-2x" style="color: red;"></i>
+            <i class="fab fa-facebook fa-2x" style="color: blue;"></i>
+        </div>
+        <div id="photo-container">Loading photo...</div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const photoContainer = document.getElementById("photo-container");
+            const API_KEY = "kZ5HbfHaWyhFEGcq8OBcXFwv7R8m3JLgGKoykhtL9zkrrtbGx87iajZY"; // Replace with your Pexels API key
+            const API_URL = "https://api.pexels.com/v1/curated?per_page=1"; // Fetch only 1 curated photo
+
+            // Fetch photo from Pexels API
+            fetch(API_URL, {
+                headers: {
+                    Authorization: `Bearer ${API_KEY}`, // Use the correct Authorization format
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.photos && data.photos.length > 0) {
+                        const photo = data.photos[0]; // Get the first photo only
+                        const photoHTML = `
+                            <img 
+                                src="${photo.src.medium}" 
+                                alt="${photo.photographer}" 
+                                class="photo"
+                                title="Photo by ${photo.photographer}"
+                            />
+                        `;
+                        photoContainer.innerHTML = photoHTML; // Insert the photo into the container
+                    } else {
+                        photoContainer.innerHTML = "<p>No photos found.</p>";
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching photo:", error);
+                    photoContainer.innerHTML = "<p>Failed to load photo.</p>";
+                });
+        });
+    </script>
+</body>
+</html>
